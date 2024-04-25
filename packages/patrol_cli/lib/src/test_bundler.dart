@@ -68,6 +68,7 @@ Future<void> main() async {
   // Dart test (out of which they had been created) and wait for it to complete.
   // The result of running the Dart test is the result of the native test case.
 
+  print('+++ +++ MAIN TEST BUNDLE');
   final nativeAutomator = NativeAutomator(config: NativeAutomatorConfig());
   await nativeAutomator.initialize();
   final binding = PatrolBinding.ensureInitialized(NativeAutomatorConfig());
@@ -79,6 +80,7 @@ Future<void> main() async {
   // This test must be the first to run. If not, the native side likely won't
   // receive any tests, and everything will fall apart.
   test('patrol_test_explorer', () {
+  print('+++ +++ patrol_test_explorer');
     // Maybe somewhat counterintuitively, this callback runs *after* the calls
     // to group() below.
     final topLevelGroup = Invoker.current!.liveTest.groups.first;

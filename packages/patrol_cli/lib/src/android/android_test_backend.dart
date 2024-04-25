@@ -107,6 +107,7 @@ class AndroidTestBackend {
       final subject = '${options.description} on ${device.description}';
       final task = _logger.task('Executing tests of $subject');
 
+      _logger.info('+++ OPTIONS ${options.toGradleConnectedTestInvocation(isWindows: _platform.isWindows)}');
       final process = await _processManager.start(
         options.toGradleConnectedTestInvocation(isWindows: _platform.isWindows),
         runInShell: true,
@@ -136,6 +137,7 @@ class AndroidTestBackend {
         throw Exception(cause);
       } else {
         final cause = 'Gradle test execution failed with code $exitCode';
+        _logger.info('+++ TEST - _execute() - subject $subject, cause $cause');
         task.fail('Failed to execute tests of $subject ($cause)');
         throw Exception(cause);
       }

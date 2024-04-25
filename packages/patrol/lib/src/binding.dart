@@ -16,7 +16,7 @@ const _success = 'success';
 
 void _defaultPrintLogger(String message) {
   // ignore: avoid_print
-  print('PatrolBinding: $message');
+  print('+++ PatrolBinding: $message');
 }
 
 /// Binding that enables some of Patrol's custom functionality, such as tapping

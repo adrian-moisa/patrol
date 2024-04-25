@@ -179,6 +179,7 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
       );
     }
 
+    _logger.info('+++ TEST dartDefines $dartDefines');
     final flutterOpts = FlutterAppOptions(
       command: flutterCommand,
       target: entrypoint.path,
@@ -209,6 +210,7 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
       scheme: buildMode.createScheme(macosFlavor),
       configuration: buildMode.createConfiguration(macosFlavor),
     );
+    _logger.info('+++ TEST flutterOpts $flutterOpts androidOpts $androidOpts iosOpts $iosOpts macosOpts $macosOpts');
 
     await _build(androidOpts, iosOpts, macosOpts, device);
     await _preExecute(androidOpts, iosOpts, macosOpts, device, uninstall);
@@ -221,6 +223,7 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
       device: device,
     );
 
+    _logger.info('+++ TEST run() - allPassed $allPassed');
     return allPassed ? 0 : 1;
   }
 
@@ -232,6 +235,7 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
     Device device,
     bool uninstall,
   ) async {
+    _logger.info('+++ TEST _preExecute()');
     if (!uninstall) {
       return;
     }
@@ -269,6 +273,7 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
     MacOSAppOptions macosOpts,
     Device device,
   ) async {
+    _logger.info('+++ TEST _build()');
     final buildAction = switch (device.targetPlatform) {
       TargetPlatform.android => () => _androidTestBackend.build(androidOpts),
       TargetPlatform.macOS => () => _macosTestBackend.build(macosOpts),
@@ -278,6 +283,7 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
     try {
       await buildAction();
     } catch (err, st) {
+      _logger.info('+++ TEST _build() _buildAction() err $err');
       _logger
         ..err('$err')
         ..detail('$st')
@@ -296,6 +302,7 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
   }) async {
     Future<void> Function() action;
     Future<void> Function()? finalizer;
+    _logger.info('+++ TEST - _execute()');
 
     switch (device.targetPlatform) {
       case TargetPlatform.android:
@@ -320,6 +327,7 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
 
     var allPassed = true;
     try {
+      _logger.info('+++ TRY ACTION');
       await action();
     } catch (err, st) {
       _logger
@@ -329,13 +337,16 @@ See https://github.com/leancodepl/patrol/issues/1316 to learn more.
       allPassed = false;
     } finally {
       try {
+        _logger.info('+++ FINALIZER');
         await finalizer?.call();
       } catch (err) {
+        _logger.info('+++ FAILED FINALIZER');
         _logger.err('Failed to call finalizer: $err');
         rethrow;
       }
     }
 
+    _logger.info('+++ TEST - _execute() - allPassed $allPassed.');
     return allPassed;
   }
 }

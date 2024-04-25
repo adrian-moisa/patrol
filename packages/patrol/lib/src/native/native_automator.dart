@@ -50,7 +50,7 @@ extension on KeyboardBehavior {
 
 void _defaultPrintLogger(String message) {
   // ignore: avoid_print
-  print('Patrol (native): $message');
+  print('+++ Patrol (native): $message');
 }
 
 /// Configuration for [NativeAutomator].

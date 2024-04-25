@@ -290,6 +290,7 @@ Ask questions, get support at https://github.com/leancodepl/patrol/discussions''
       }
       exitCode = await runCommand(topLevelResults) ?? 0;
     } on ToolExit catch (err, st) {
+      _logger.info('+++ PATROL CMD RUNNER - TOOL EXIT - exitCode $exitCode.');
       if (verbose) {
         _logger
           ..err('$err')
@@ -298,6 +299,7 @@ Ask questions, get support at https://github.com/leancodepl/patrol/discussions''
         _logger.err('$err');
       }
     } on ToolInterrupted catch (err, st) {
+      _logger.info('+++ PATROL CMD RUNNER - TOOL INTERRUPT - exitCode $exitCode.');
       if (verbose) {
         _logger
           ..err('$err')
@@ -306,6 +308,7 @@ Ask questions, get support at https://github.com/leancodepl/patrol/discussions''
         _logger.err(err.message);
       }
     } on FormatException catch (err, st) {
+      _logger.info('+++ PATROL CMD RUNNER - FORMAT EXCEP - exitCode $exitCode.');
       _logger
         ..err(err.message)
         ..err('source: ${err.source}')
@@ -313,26 +316,31 @@ Ask questions, get support at https://github.com/leancodepl/patrol/discussions''
         ..info('')
         ..info(usage);
     } on UsageException catch (err) {
+      _logger.info('+++ PATROL CMD RUNNER - USAGE EXCEP - exitCode $exitCode.');
       _logger
         ..err(err.message)
         ..info('')
         ..info(err.usage);
     } on FileSystemException catch (err, st) {
+      _logger.info('+++ PATROL CMD RUNNER - FILE SYS EXCEP - exitCode $exitCode.');
       _logger
         ..err('${err.message}: ${err.path}')
         ..err('$err')
         ..err('$st');
     } catch (err, st) {
+      _logger.info('+++ PATROL CMD RUNNER - GENERIC ERR - exitCode $exitCode.');
       _logger
         ..err('$err')
         ..err('$st');
     }
 
+    _logger.info('+++ PATROL CMD RUNNER - exitCode $exitCode.');
     return exitCode;
   }
 
   @override
   Future<int?> runCommand(ArgResults topLevelResults) async {
+    _logger.info('+++ PATROL CMD RUNNER - runCommand()');
     final commandName = topLevelResults.command?.name;
 
     if (_wantsUpdateCheck(commandName)) {
@@ -344,9 +352,11 @@ Ask questions, get support at https://github.com/leancodepl/patrol/discussions''
       _logger.info('patrol_cli v${constants.version}');
       exitCode = 0;
     } else {
+      _logger.info('+++ PATROL CMD RUNNER - topLevelResults $topLevelResults.');
       exitCode = await super.runCommand(topLevelResults);
     }
 
+    _logger.info('+++ PATROL CMD RUNNER - runCommand() - exitCode $exitCode.');
     return exitCode;
   }
 
